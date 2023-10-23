@@ -30,9 +30,9 @@ function App() {
     '10:00 - 12:00'
   ]
 
-  const isVikiWorking = false /* isEvenWeek
+  const isVikiWorking = isEvenWeek
     ? vikiSchedule.even.includes(now.getDay())
-    : vikiSchedule.odd.includes(now.getDay()) */
+    : vikiSchedule.odd.includes(now.getDay())
   const thisWeekSchedule = isEvenWeek ? vikiSchedule.even : vikiSchedule.odd
 
   return (
