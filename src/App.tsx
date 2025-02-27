@@ -41,6 +41,13 @@ function App() {
     setSelectedDate(selectedDate)
   }
 
+  function getDefaultDateInput() {
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    const day = String(now.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -59,7 +66,12 @@ function App() {
       <p>{thisWeekSchedule.map((day) => daysOfWeek[day]).join(', ')}</p>
       <div className='date-selector-container'>
         <label htmlFor='datePicker'>Megnéznék egy másik napot:</label>
-        <input type='date' id='datePicker' onChange={handleDateChange} />
+        <input
+          type='date'
+          id='datePicker'
+          onChange={handleDateChange}
+          defaultValue={getDefaultDateInput()}
+        />
       </div>
       <footer>
         <p>
