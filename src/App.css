@@ -34,6 +34,23 @@
   letter-spacing: 0.05em;
 }
 
+.date-selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+
+  & input {
+    font-size: 1em;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #0a2e38;
+    text-align: center;
+  }
+}
+
 .time {
   font-family: monospace;
 }

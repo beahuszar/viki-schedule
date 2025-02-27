@@ -1,52 +1,66 @@
+import { useState } from 'react'
 import './App.css'
 
+const daysOfWeek = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
+const vikiSchedule = {
+  even: [1, 2, 3, 4, 6, 0],
+  odd: [2, 3, 4]
+}
+const schedule = [
+  '18:00 - 20:00',
+  '10:00 - 20:00',
+  '10:00 - 20:00',
+  '10:00 - 20:00',
+  '10:00 - 20:00',
+  '10:00 - 20:00',
+  '10:00 - 12:00'
+]
+
 function App() {
-  /* 
-      paratlan: h sz cs 
-      paros: h k cs p sz v
-  
-  */
-
   const now = new Date()
-  const weekNumber = Math.ceil(
-    (now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / 604800000
-  )
+  const [selectedDate, setSelectedDate] = useState(now)
+  const isTodaySelected = now.getDay() === selectedDate.getDay()
+  const weekNumber = getWeekNumber(selectedDate)
   const isEvenWeek = weekNumber % 2 === 0
-  const daysOfWeek = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
-  const dayOfWeek = daysOfWeek[now.getDay()]
-
-  const vikiSchedule = {
-    even: [1, 2, 4, 5, 6, 0],
-    odd: [1, 3, 4]
-  }
-
-  const schedule = [
-    '18:00 - 20:00',
-    '10:00 - 20:00',
-    '10:00 - 20:00',
-    '10:00 - 20:00',
-    '10:00 - 20:00',
-    '10:00 - 20:00',
-    '10:00 - 12:00'
-  ]
 
   const isVikiWorking = isEvenWeek
-    ? vikiSchedule.even.includes(now.getDay())
-    : vikiSchedule.odd.includes(now.getDay())
+    ? vikiSchedule.even.includes(selectedDate.getDay())
+    : vikiSchedule.odd.includes(selectedDate.getDay())
   const thisWeekSchedule = isEvenWeek ? vikiSchedule.even : vikiSchedule.odd
+
+  function getWeekNumber(date: Date) {
+    const jan1 = new Date(date.getFullYear(), 0, 1)
+    const dayOfJan1 = jan1.getDay() || 7 // Adjust if Jan 1 is Sunday (0)
+    const dayOfYear = Math.floor((date.getTime() - jan1.getTime()) / (24 * 60 * 60 * 1000)) + 1 // difference in days between the selected date and January 1st.
+    const adjustedDayOfYear = dayOfYear + (dayOfJan1 - 1) // Adjust for the first day of the year (e.g.: starting on a wednesday should still calculate from that week's monday)
+    return Math.ceil(adjustedDayOfYear / 7)
+  }
+
+  function handleDateChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const selectedDate = new Date(event.target.value || now.toISOString())
+    setSelectedDate(selectedDate)
+  }
 
   return (
     <div className='App'>
       <header className='App-header'>
-        <h1>Ma dolgozik Viki?</h1>
+        <h1>{isTodaySelected ? 'Ma dolgozik Viki?' : 'A kiválasztott napon dolgozik Viki?'}</h1>
       </header>
       <div className='card'>
         <div>{isVikiWorking ? 'Igen' : 'Nem'}</div>
-        <div className='time'>{isVikiWorking ? schedule[now.getDay()] : '-'}</div>
+        <div className='time'>{isVikiWorking ? schedule[selectedDate.getDay()] : '-'}</div>
         <div className='emoji'>{isVikiWorking ? '👩🏻‍⚕️' : '🎉'}</div>
       </div>
-      <div>Milyen napokon dolgozik a héten?</div>
+      <div>
+        {isTodaySelected
+          ? 'Milyen napokon dolgozik a héten?'
+          : 'Milyen napokon dolgozik a kiválasztott héten?'}
+      </div>
       <p>{thisWeekSchedule.map((day) => daysOfWeek[day]).join(', ')}</p>
+      <div className='date-selector-container'>
+        <label htmlFor='datePicker'>Megnéznék egy másik napot:</label>
+        <input type='date' id='datePicker' onChange={handleDateChange} />
+      </div>
       <footer>
         <p>
           A változtatás jogát fenntartjuk, szabadság és ünnepnapok jelenleg nincsenek kezelve a
