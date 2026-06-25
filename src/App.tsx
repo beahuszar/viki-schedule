@@ -3,13 +3,13 @@ import './App.css'
 
 const daysOfWeek = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
 const vikiSchedule = {
-  even: [1, 2, 3, 4, 6, 0],
-  odd: [2, 3, 4]
+  even: [1, 2, 3, 6, 0],
+  odd: [1, 2, 3]
 }
 const schedule = [
   '18:00 - 20:00',
   '10:00 - 20:00',
-  '10:00 - 20:00',
+  '10:00 - 16:00',
   '10:00 - 20:00',
   '10:00 - 20:00',
   '10:00 - 20:00',
