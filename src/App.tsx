@@ -5,11 +5,11 @@ const daysOfWeek = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'P
 const workingDays = [1, 2, 3, 4, 5]
 // Kezdés fix, a vége nem fix, de legkésőbb 16:00-ig tart
 const schedule: Record<number, string> = {
-  1: '14:30-tól, legkésőbb 16:00-ig',
-  2: '13:30-tól, legkésőbb 16:00-ig',
-  3: '13:30-tól, legkésőbb 16:00-ig',
-  4: '13:00-tól, legkésőbb 16:00-ig',
-  5: '11:30-tól, legkésőbb 16:00-ig'
+  1: '14:30 - ~16:00',
+  2: '13:30 - ~16:00',
+  3: '13:30 - ~16:00',
+  4: '13:00 - ~16:00',
+  5: '11:30 - ~16:00'
 }
 
 function App() {
