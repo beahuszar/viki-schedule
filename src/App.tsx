@@ -2,39 +2,21 @@ import { useState } from 'react'
 import './App.css'
 
 const daysOfWeek = ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat']
-const vikiSchedule = {
-  even: [1, 2, 3, 6, 0],
-  odd: [1, 2, 3]
+const workingDays = [1, 2, 3, 4, 5]
+// Kezdés fix, a vége nem fix, de legkésőbb 16:00-ig tart
+const schedule: Record<number, string> = {
+  1: '14:30-tól, legkésőbb 16:00-ig',
+  2: '13:30-tól, legkésőbb 16:00-ig',
+  3: '13:30-tól, legkésőbb 16:00-ig',
+  4: '13:00-tól, legkésőbb 16:00-ig',
+  5: '11:30-tól, legkésőbb 16:00-ig'
 }
-const schedule = [
-  '18:00 - 20:00',
-  '10:00 - 20:00',
-  '10:00 - 16:00',
-  '10:00 - 20:00',
-  '10:00 - 20:00',
-  '10:00 - 20:00',
-  '10:00 - 12:00'
-]
 
 function App() {
   const now = new Date()
   const [selectedDate, setSelectedDate] = useState(now)
   const isTodaySelected = now.getDay() === selectedDate.getDay()
-  const weekNumber = getWeekNumber(selectedDate)
-  const isEvenWeek = weekNumber % 2 === 0
-
-  const isVikiWorking = isEvenWeek
-    ? vikiSchedule.even.includes(selectedDate.getDay())
-    : vikiSchedule.odd.includes(selectedDate.getDay())
-  const thisWeekSchedule = isEvenWeek ? vikiSchedule.even : vikiSchedule.odd
-
-  function getWeekNumber(date: Date) {
-    const jan1 = new Date(date.getFullYear(), 0, 1)
-    const dayOfJan1 = jan1.getDay() || 7 // Adjust if Jan 1 is Sunday (0)
-    const dayOfYear = Math.floor((date.getTime() - jan1.getTime()) / (24 * 60 * 60 * 1000)) + 1 // difference in days between the selected date and January 1st.
-    const adjustedDayOfYear = dayOfYear + (dayOfJan1 - 1) // Adjust for the first day of the year (e.g.: starting on a wednesday should still calculate from that week's monday)
-    return Math.ceil(adjustedDayOfYear / 7)
-  }
+  const isVikiWorking = workingDays.includes(selectedDate.getDay())
 
   function handleDateChange(event: React.ChangeEvent<HTMLInputElement>) {
     const selectedDate = new Date(event.target.value || now.toISOString())
@@ -63,7 +45,7 @@ function App() {
           ? 'Milyen napokon dolgozik a héten?'
           : 'Milyen napokon dolgozik a kiválasztott héten?'}
       </div>
-      <p>{thisWeekSchedule.map((day) => daysOfWeek[day]).join(', ')}</p>
+      <p>{workingDays.map((day) => daysOfWeek[day]).join(', ')}</p>
       <div className='date-selector-container'>
         <label htmlFor='datePicker'>Megnéznék egy másik napot:</label>
         <input
